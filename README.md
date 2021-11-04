@@ -8,7 +8,7 @@ Project Opt11
 
 ## Description
 
-This is a description of the project
+This is a description of the project.
 
 <br>
 
