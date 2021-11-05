@@ -76,9 +76,10 @@ This is a description of the project.
 
 Set environment variables (must do on terminal startup(?)).
 
-> `$ export RISCV=~/projects/CSE220/riscv `
-
-> `$ export PATH=$RISCV/bin:$PATH `
+```
+    $ export RISCV=~/projects/CSE220/riscv 
+    $ export PATH=$RISCV/bin:$PATH
+```
 
 
 
@@ -87,7 +88,9 @@ Set environment variables (must do on terminal startup(?)).
 
 Run baremetal:
 
-> `$ ./dromajo/build_release/dromajo --trace 0 riscv/tests/share/riscv-tests/isa/rv64ua-p-amoadd_d`
+``` 
+    $ ./dromajo/build_release/dromajo --trace 0 riscv/tests/share/riscv-tests/isa/rv64ua-p-amoadd_d 
+```
 
 
 
