@@ -10,6 +10,17 @@ Project Opt11
 
 This is a description of the project.
 
+
+<br>
+
+### Project Steps:
+1. Get dromajo running some simple baremetal
+2. Get QEMU to compile and run some baremetal 
+3. Get QEMU to run some simple ACLINT
+4. Bring the QEMU ACLINT implementation to QEMU(?) In dromajo, check the CLINT (riscv_machine.cpp)
+
+
+
 <br>
 
 ## Install
@@ -66,7 +77,8 @@ This is a description of the project.
 4. QEMU
    
     ```
-        $ echo "hello world!"
+        $ sudo apt install qemu-riscv64-system
+        ...
     ```
 
 
@@ -74,36 +86,36 @@ This is a description of the project.
 
 ## Notes
 
-Set environment variables (must do on terminal startup(?)):
+* Set environment variables (must do on terminal startup(?)):
 
-```
-    $ export RISCV=~/projects/CSE220/riscv 
-    $ export PATH=$RISCV/bin:$PATH
-```
+    ```
+        $ export RISCV=~/projects/CSE220/riscv 
+        $ export PATH=$RISCV/bin:$PATH
+    ```
 
-
-
-<br>
-
-
-Run baremetal:
-
-``` 
-    $ ./dromajo/build_release/dromajo --trace 0 riscv/tests/share/riscv-tests/isa/rv64ua-p-amoadd_d 
-```
 
 
 <br>
 
 
-[Simple function build:](https://mindchasers.com/dev/rv-getting-started)
+* Run baremetal:
 
-``` 
-    $ riscv32-unknown-elf-gcc -g tst.c -o tst
-    $ riscv32-unknown-elf-objdump -d tst
-```
+    ``` 
+        $ ./dromajo/build_release/dromajo --trace 0 riscv/tests/share/riscv-tests/isa/rv64ua-p-amoadd_d 
+    ```
 
-\*where `test.c` is a simple function in c and make sure $PATH is set
+
+<br>
+
+
+* [Simple function build:](https://mindchasers.com/dev/rv-getting-started)
+
+    ``` 
+        $ riscv32-unknown-elf-gcc -g tst.c -o tst
+        $ riscv32-unknown-elf-objdump -d tst
+    ```
+
+    \*where `test.c` is a simple function in c and make sure $PATH is set
 
 
 <br>
