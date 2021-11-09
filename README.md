@@ -74,7 +74,7 @@ This is a description of the project.
 
 ## Notes
 
-Set environment variables (must do on terminal startup(?)).
+Set environment variables (must do on terminal startup(?)):
 
 ```
     $ export RISCV=~/projects/CSE220/riscv 
@@ -93,9 +93,22 @@ Run baremetal:
 ```
 
 
+<br>
+
+
+[Simple function build:](https://mindchasers.com/dev/rv-getting-started)
+
+``` 
+    $ riscv32-unknown-elf-gcc -g tst.c -o tst
+    $ riscv32-unknown-elf-objdump -d tst
+```
+
+\*where `test.c` is a simple function in c and make sure $PATH is set
 
 
 <br>
+
+
 
 
 
