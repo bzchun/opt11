@@ -2,7 +2,7 @@
 
 Brevan Chun
 
-Project Opt11: Implement RISC-V draft in dromajo.
+Project Opt11: Implement ACLINT RISC-V specification in dromajo.
 
 <br>
 
