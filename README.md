@@ -2,7 +2,7 @@
 
 Brevan Chun
 
-Project Opt11
+Project Opt11: Implement RISC-V draft in dromajo.
 
 <br>
 
@@ -18,6 +18,10 @@ This is a description of the project.
 2. Get QEMU to compile and run some baremetal 
 3. Get QEMU to run some simple ACLINT
 4. Bring the QEMU ACLINT implementation to QEMU(?) In dromajo, check the CLINT (riscv_machine.cpp)
+
+Implement the ACLINT used in qemu in dromajo and figure out a way to verify it.
+Put the ACLINT in and ifdef
+
 
 
 
@@ -103,7 +107,12 @@ This is a description of the project.
     ``` 
         $ ./dromajo/build_release/dromajo --trace 0 riscv/tests/share/riscv-tests/isa/rv64ua-p-amoadd_d 
     ```
-
+    
+    ```
+        $ cd <dromajo>/run
+        $ riscv64-unknown-elf-gcc -march=rv64g -mabi=lp64 -static -mcmodel=medany -nostdlib -nostartfiles uart_test.c crt.S -lgcc -T test.ld -o uart_test
+        $ ../build/dromajo ./uart_test
+    ```
 
 <br>
 
@@ -120,7 +129,13 @@ This is a description of the project.
 
 <br>
 
+* Files:
+    - riscv_machine.cpp
+    - riscv_cpu.cpp
+    - dromajo_main.cpp
+    - setup.md
 
+    ```$ grep -rnw '/home/bzchun/projects/CSE220/dromajo/' -e "clint" ```
 
 
 
