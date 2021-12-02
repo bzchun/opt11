@@ -2,13 +2,12 @@
 
 Brevan Chun
 
-Project Opt11: Implement ACLINT RISC-V specification in dromajo.
 
-<br>
 
 ## Description
 
-This is a description of the project.
+
+Project Opt11: Implement the ACLINT RISC-V specification in dromajo. This implementation is not complete. Once completed, the altered files should be merged with Dromajo. The QEMU RISC-V ACLINT was used as a guide for the implementation found here. Other resources were also used.
 
 
 <br>
@@ -19,7 +18,7 @@ This is a description of the project.
 3. Get QEMU to run some simple ACLINT
 4. Bring the QEMU ACLINT implementation to QEMU(?) In dromajo, check the CLINT (riscv_machine.cpp)
 
-Implement the ACLINT used in qemu in dromajo and figure out a way to verify it.
+- Implement the ACLINT used in qemu in dromajo and figure out a way to verify it.
 Put the ACLINT in and ifdef
 
 
@@ -27,7 +26,7 @@ Put the ACLINT in and ifdef
 
 <br>
 
-## Install
+## Environment Setup
 
 1. [RISC-V GNU Toolchain](https://github.com/riscv/riscv-gnu-toolchain)
 
@@ -78,19 +77,30 @@ Put the ACLINT in and ifdef
 
     ```
   
-4. QEMU
+4. [QEMU](https://github.com/qemu/qemu)
    
     ```
         $ sudo apt install qemu-riscv64-system
         ...
     ```
-
+    - See QEMU installation directions
 
 <br>
 
+
+## Files
+
+* riscv_machine.cpp
+
+    - added 4 functions similar to the QEMU implementation.
+    - call these functions instead of the default clint functions
+
+<br>
+
+
 ## Notes
 
-* Set environment variables (must do on terminal startup(?)):
+* Set environment variables (must do on terminal startup):
 
     ```
         $ export RISCV=~/projects/CSE220/riscv 
@@ -124,18 +134,22 @@ Put the ACLINT in and ifdef
         $ riscv32-unknown-elf-objdump -d tst
     ```
 
-    \*where `test.c` is a simple function in c and make sure $PATH is set
-
+    \*where `tst.c` is a simple program in c and make sure $PATH is set
 
 <br>
 
-* Files:
-    - riscv_machine.cpp
-    - riscv_cpu.cpp
-    - dromajo_main.cpp
-    - setup.md
+\*This project was completed in a VM VirtualBox running Ubuntu 20.04.3LTS
 
-    ```$ grep -rnw '/home/bzchun/projects/CSE220/dromajo/' -e "clint" ```
+<br>
 
+
+## Relevant Links
+
+- [RISC-V ACLINT Spec](https://github.com/riscv/riscv-aclint/blob/main/riscv-aclint.adoc)
+- [RISC-V Priveledged Spec](https://github.com/riscv/riscv-isa-manual/releases/tag/draft-20211201-f65ddcf)
+- [QEMU RISC-V ACLINT](https://github.com/qemu/qemu/blob/2c3e83f92d93fbab071b8a96b8ab769b01902475/hw/intc/riscv_aclint.c)
+- [SiFive CLINT Spec](https://static.dev.sifive.com/FU540-C000-v1.0.pdf)
+- [WD Presentation](https://linuxplumbersconf.org/event/11/contributions/1098/attachments/805/1584/Next_gen_riscv_interrupt_support_v3.pdf)
+- [OpenSBI](https://github.com/riscv-software-src/opensbi)
 
 
