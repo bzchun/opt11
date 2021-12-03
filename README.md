@@ -9,7 +9,7 @@ Brevan Chun
 
 Project Opt11: Implement the ACLINT RISC-V specification in dromajo. This implementation is not complete. Once completed, the altered files should be merged with Dromajo. The QEMU RISC-V ACLINT was used as a guide for the implementation found here. Other resources were also used.
 
-riscv_machine.cpp contains 4 new functions (around line 300). These functions resemble the ones implemented in QEMU. The functionality of these functions is unverified (I ran out of time to get tests for them). 
+riscv_machine.cpp contains 4 new functions (around line 300). These functions resemble the ones implemented in QEMU. The functionality of these functions is unverified (I ran out of time to get tests for them). My plan for testing the ACLINT was to write a RISCV or C program that utilized the ACLINT.
 
 
 <br>
