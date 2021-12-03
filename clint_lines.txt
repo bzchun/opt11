@@ -1,0 +1,53 @@
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:192:static uint32_t clint_read(void *opaque, uint32_t offset, int size_log2) {
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:221:        vm_error("clint_read to unmanaged address CLINT_BASE+0x%x\n", offset);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:226:    vm_error("clint_read: offset=%x val=%x\n", offset, val);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:239:static void clint_write(void *opaque, uint32_t offset, uint32_t val, int size_log2) {
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:277:        vm_error("clint_write to unmanaged address CLINT_BASE+0x%x\n", offset);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:282:    vm_error("clint_write: offset=%x val=%x\n", offset, val);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:726:        fdt_begin_node_num(s, "clint", m->clint_base_addr);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:727:        fdt_prop_str(s, "compatible", "riscv,clint0");
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:738:        fdt_prop_tab_u64_2(s, "reg", m->clint_base_addr, m->clint_size);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:740:        fdt_end_node(s); /* clint */
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1045:    p->clint_base_addr   = CLINT_BASE_ADDR;
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1046:    p->clint_size        = CLINT_SIZE;
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1090:    s->clint_base_addr = p->clint_base_addr;
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1091:    s->clint_size      = p->clint_size;
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1148:                        p->clint_base_addr,
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1149:                        p->clint_size,
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1151:                        clint_read,
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1152:                        clint_write,
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1255:    /* plic/clint setup */
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1258:    s->clint_base_addr = p->clint_base_addr;
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1259:    s->clint_size      = p->clint_size;
+/home/bzchun/projects/CSE220/dromajo/src/riscv_machine.cpp:1303:    riscv_cpu_serialize(s, dump_name, m->clint_base_addr);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_cpu.cpp:1981:static void create_boot_rom(RISCVCPUState *s, const char *file, const uint64_t clint_base_addr) {
+/home/bzchun/projects/CSE220/dromajo/src/riscv_cpu.cpp:2100:            "clint hartid=%d timecmp=%" PRId64 " cycles (%" PRId64 ")\n",
+/home/bzchun/projects/CSE220/dromajo/src/riscv_cpu.cpp:2106:    create_io64_recovery(rom, &code_pos, &data_pos, clint_base_addr + 0x4000, s->timecmp);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_cpu.cpp:2110:    create_io64_recovery(rom, &code_pos, &data_pos, clint_base_addr + 0xbff8, s->mcycle / RTC_FREQ_DIV);
+/home/bzchun/projects/CSE220/dromajo/src/riscv_cpu.cpp:2136:void riscv_cpu_serialize(RISCVCPUState *s, const char *dump_name, const uint64_t clint_base_addr) {
+/home/bzchun/projects/CSE220/dromajo/src/riscv_cpu.cpp:2228:        create_boot_rom(s, f_name, clint_base_addr);
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:569:            "       --clint START:SIZE set CLINT start address and size in B (defaults to 0x%lx:0x%lx)\n"
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:627:    uint64_t    clint_base_addr_override = 0;
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:628:    uint64_t    clint_size_override      = 0;
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:659:            {"clint",                   required_argument, 0,  'C' }, // CFG
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:799:                    usage(prog, "--clint expects an argument like START:SIZE");
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:802:                char *clint_base_addr = strtok(copy, ":");
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:803:                char *clint_size      = strtok(NULL, ":");
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:805:                if (clint_base_addr[0] != '0' || clint_base_addr[1] != 'x')
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:806:                    usage(prog, "--clint START address must begin with 0x...");
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:807:                clint_base_addr_override = strtoll(clint_base_addr + 2, NULL, 16);
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:809:                if (clint_size[0] != '0' || clint_size[1] != 'x')
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:810:                    usage(prog, "--clint SIZE must begin with 0x...");
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:811:                clint_size_override = strtoll(clint_size + 2, NULL, 16);
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:974:    if (clint_base_addr_override)
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:975:        p->clint_base_addr = clint_base_addr_override;
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:976:    if (clint_size_override)
+/home/bzchun/projects/CSE220/dromajo/src/dromajo_main.cpp:977:        p->clint_size = clint_size_override;
+/home/bzchun/projects/CSE220/dromajo/doc/cva6-dromajo-integration.md:114:  "clint_base_addr": 0x02000000,
+/home/bzchun/projects/CSE220/dromajo/doc/cva6-dromajo-integration.md:115:  "clint_size": 0xC0000,
+/home/bzchun/projects/CSE220/dromajo/doc/setup.md:145:clint hartid=0 timecmp=-1 cycles (124999)
+/home/bzchun/projects/CSE220/dromajo/include/machine.h:182:    uint64_t clint_base_addr;
+/home/bzchun/projects/CSE220/dromajo/include/machine.h:183:    uint64_t clint_size;
+/home/bzchun/projects/CSE220/dromajo/include/riscv_machine.h:99:    uint64_t clint_base_addr;
+/home/bzchun/projects/CSE220/dromajo/include/riscv_machine.h:100:    uint64_t clint_size;
+/home/bzchun/projects/CSE220/dromajo/include/riscv_cpu.h:312:void riscv_cpu_serialize(RISCVCPUState *s, const char *dump_name, const uint64_t clint_base_addr);
