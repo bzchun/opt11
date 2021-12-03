@@ -95,6 +95,10 @@ Put the ACLINT in and ifdef
     - added 4 functions similar to the QEMU implementation.
     - call these functions instead of the default clint functions
 
+* clint_lines.txt
+    
+    - output of a grep to find everwhere in Dromajo where the word "clint" is used
+
 <br>
 
 
