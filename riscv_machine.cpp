@@ -206,6 +206,8 @@ static uint32_t clint_read(void *opaque, uint32_t offset, int size_log2) {
             val = 0;
         } else {
             val = (riscv_cpu_get_mip(m->cpu_state[hartid]) & MIP_MSIP) != 0;
+            // mip is an interrupt register (info on pending interrupts)
+            // MIP_MSIP is lower 3rd bit of the mip register (interrupt pending bit signal)
         }
     } else if (offset == 0xbff8) {
         uint64_t mtime = m->cpu_state[0]->mcycle / RTC_FREQ_DIV;  // WARNING: mcycle may need to move to RISCVMachine
@@ -291,30 +293,44 @@ static void clint_write(void *opaque, uint32_t offset, uint32_t val, int size_lo
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // ********************************************************************************************************************************
-
-
+/* 
+*   Edits made by Brevan Chun
+*   For CSE220 project opt 11 (Fall2021)
+*/ 
+// Where are these functions called?
+// What is 'int size_log2' ???
 static uint32_t aclint_mtimer_read(void *opaque, uint32_t offset, int size_log2) {
     
     RISCVMachine *m = (RISCVMachine *)opaque;
     uint32_t val;
 
-    if (0 <= offset && offset <= 0x7FF0) {
-        int hartid = offset >> 3; // ?
+    if (0 <= offset && offset <= 0x7FF0) {  // Reading MTIME might be a different offset
+        //int hartid = offset >> 3; // why this changed from ">> 2" to ">> 3"?)
+        int hartid = (offset - 0x4000) >> 3;    // 0x4000 may be hardware specific
         if (m->ncpus <= hartid) {
             vm_error("%s: MTIME access for hartid:%d which is beyond ncpus\n", __func__, hartid);
             val = 0;
+        } else if ((offset >> 2) & 1) {
+            // LOWER 32b
+            val = m->cpu_state[hartid]->timecmp >> 32;  // timecmp == MTIMECMP (?)
         } else {
-            //val = (riscv_cpu_get_mip(m->cpu_state[hartid]) & MIP_MSIP) != 0;
-            
+            // UPPER 32b
+            val = m->cpu_state[hartid]->timecmp;
         }
-
     } else {
         vm_error("aclint_mtimer_read to unmanaged address ACLINT_BASE+0x%x\n", offset);
         val = 0;
     }
 
-    
-    return 0;
+    // This has something to do with sign?
+    switch (size_log2) {
+        case 1: val = val & 0xffff; break;
+        case 2: val = val & 0xffffffff; break;
+        case 3:
+        default: break;
+    }
+
+    return val;
 }
 
 
@@ -322,8 +338,27 @@ static void aclint_mtimer_write(void *opaque, uint32_t offset, uint32_t val, int
 
     RISCVMachine *m = (RISCVMachine *)opaque;
 
-    if (0 <= offset && offset <- 0x7FF0) {
-
+    // just copied this, does it actually do something?
+    switch (size_log2) {
+        case 1: val = val & 0xffff; break;
+        case 2: val = val & 0xffffffff; break;
+        case 3:
+        default: break;
+    }
+    
+    if (0 <= offset && offset <= 0x7FF0) {      // probably have to do a different case for MTIME reg
+        int hartid = (offset - 0x4000) >> 3;    // 0x4000 may be hardware specific
+        if (m->ncpus <= hartid) {   // not sure if this check is correct (ACLINT has no MSIP)
+            vm_error("%s: MSIP access for hartid:%d which is beyond ncpus\n", __func__, hartid);
+        } else if ((offset >> 2) & 1) {
+            // LOWER 32
+            m->cpu_state[hartid]->timecmp = (m->cpu_state[hartid]->timecmp & 0xffffffff) | ((uint64_t)val << 32);
+            riscv_cpu_reset_mip(m->cpu_state[hartid], MIP_MTIP);
+        } else {
+            // UPPER 32
+            m->cpu_state[hartid]->timecmp = (m->cpu_state[hartid]->timecmp & ~0xffffffff) | val;
+            riscv_cpu_reset_mip(m->cpu_state[hartid], MIP_MTIP);
+        }
     } else {
         vm_error("aclint_mtimer_write to unmanaged address ACLINT_BASE+0x%x\n", offset);
         val = 0;
@@ -332,27 +367,54 @@ static void aclint_mtimer_write(void *opaque, uint32_t offset, uint32_t val, int
     return;
 }
 
+
 static uint32_t aclint_swi_read(void *opaque, uint32_t offset, int size_log2) {
 
     RISCVMachine *m = (RISCVMachine *)opaque;
     uint32_t val;
 
     if (0 <= offset && offset <= 0x3FF8) {
-
+        // must put error handling here!
+        int hartid = (offset >> 2);
+        val = m->cpu_state[hartid]->mip & MIP_MSIP; // return the MSIP part of the MIP reg
     } else {
         vm_error("aclint_swi_read to unmanaged address ACLINT_BASE+0x%x\n", offset);
         val = 0;
     }
 
-    return 0;
+    // just copied this, does it actually do something?
+    switch (size_log2) {
+        case 1: val = val & 0xffff; break;
+        case 2: val = val & 0xffffffff; break;
+        case 3:
+        default: break;
+    }
+
+    return val;
 }
+
 
 static void aclint_swi_write(void *opaque, uint32_t offset, uint32_t val, int size_log2) {
 
     RISCVMachine *m = (RISCVMachine *)opaque;
 
-    if (0 <= offset && offset <= 0x3FF8) {
+    // just copied this, does it actually do something?
+    switch (size_log2) {
+        case 1: val = val & 0xffff; break;
+        case 2: val = val & 0xffffffff; break;
+        case 3:
+        default: break;
+    }
 
+    if (0 <= offset && offset <= 0x3FF8) {
+        int hartid = (offset >> 2); // SETSSIP regs are 4B wide
+        // need some hartid checking here!
+        if (val & 0x1) {
+            // write to the MIP_SSIP reg
+            m->cpu_state[hartid]->mip = (m->cpu_state[hartid]->mip & 0x2);
+        } else {
+            // value is zero so what to do?
+        }
     } else {
         vm_error("aclint_swi_write to unmanaged address ACLINT_BASE+0x%x\n", offset);
         val = 0;
