@@ -411,7 +411,7 @@ static void aclint_swi_write(void *opaque, uint32_t offset, uint32_t val, int si
         // need some hartid checking here!
         if (val & 0x1) {
             // write to the MIP_SSIP reg
-            m->cpu_state[hartid]->mip = (m->cpu_state[hartid]->mip & 0x2);
+            m->cpu_state[hartid]->mip = (m->cpu_state[hartid]->mip | 0x2);
         } else {
             // value is zero so what to do?
         }
